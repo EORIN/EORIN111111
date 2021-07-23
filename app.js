@@ -9,8 +9,8 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html');
 });
 
-users = []
-connections = []
+// users = []
+// connections = []
 
 // io.on('connection', (socket) => {
 //     console.log('a user connected');
@@ -18,13 +18,18 @@ connections = []
 //       console.log('user disconnected');
 //     });
 //   });
-
+//io.emit('some event', { someProperty: 'some value', otherProperty: 'other value' })
 io.on('connection', (socket) => {
+    socket.broadcast.emit('hi');
+  });
+
+  io.on('connection', (socket) => {
     socket.on('chat message', (msg) => {
-      console.log('message: ' + msg);
+      io.emit('chat message', msg);
     });
   });
 
-server.listen('https://eorin.github.io/', () => {
+
+server.listen(3000, () => {
   console.log('listening on *:3000');
 })
